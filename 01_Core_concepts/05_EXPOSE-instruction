@@ -1,0 +1,15 @@
+#EXPOSE instruction doesn't actually publish the port
+
+FROM nginx:alpine
+COPY ./html /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+#docker run -d --name nginx nginx
+#docker run -d --name nginx2 -p 80:80 nginx
+
+#docker ps
+# nginx2 PORTS 0.0.0.0:80-->80/tcp
+# nginx PORTS 80/tcp
+
+#every request to the port of the HOST will be forwarded to the PORT 80 of the container
