@@ -3,7 +3,7 @@
 
 This repository contains basic Kubernetes manifest files to help practice for the **Certified Kubernetes Administrator (CKA)** exam.
 
-## 📂 Contents
+## 📂 Contents:
 
 * **Pod** – basic pod definition
 * **Deployment** – stateless applications with replicas
