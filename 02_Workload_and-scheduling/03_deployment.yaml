@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
+#if you change the yaml, the new pods will be created automatically.. unlike replicaset
+
+#perform update in rollout manner tp ensure that your application is not down i.e first create new pod with the updates then remove the older one
+
+#>Kubectl create deployment nginx-deployment --image=nginx
+
+#>kubectl rollout undo deployment nginx-deployment
+
+#rollout to specific version: 
+  #get your version: kubectl rollout undo deployment nginx-deployment --to-revision=2
