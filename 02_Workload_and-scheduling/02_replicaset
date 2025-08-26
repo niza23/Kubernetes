@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+
+
+#replicaset manage these 3 pods with labels tier: frontend and the Replicaset will  identify the pods via the selector tier: frontend
+
+#Challenges
+#1. updating container image
+#2. no built-in rollback mechanism
+#3. Labels collison with Replicaset Selector
