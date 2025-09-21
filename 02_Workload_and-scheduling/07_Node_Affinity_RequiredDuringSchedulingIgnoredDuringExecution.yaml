@@ -1,0 +1,29 @@
+# This means the Pod must run only on nodes that match the rule.
+# If no node matches, the Pod will stay in Pending state.
+
+#Required = hard rule → no match = no scheduling.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-required-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      # "requiredDuringSchedulingIgnoredDuringExecution" = Hard rule
+      # - If no node matches, the Pod will stay in Pending state.
+      # - The "IgnoredDuringExecution" part means: if the node’s labels change
+      #   after the Pod is scheduled, it will NOT be evicted.
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:            # A list of possible match rules
+          - matchExpressions:         # Each rule can have multiple conditions
+              - key: disktype         # Node label key to check
+                operator: In          # Operator: "In", "NotIn", "Exists", "DoesNotExist"
+                values:
+                  - ssd               # Pod only runs on nodes with label disktype=ssd
+  containers:
+    - name: nginx
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+
