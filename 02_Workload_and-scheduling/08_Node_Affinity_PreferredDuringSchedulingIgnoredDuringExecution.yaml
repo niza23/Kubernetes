@@ -1,0 +1,28 @@
+# This means the Pod prefers certain nodes, but if they’re unavailable, it can still run elsewhere.
+
+#Preferred = soft rule → tries to match, but will fallback.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-preferred-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      # "preferredDuringSchedulingIgnoredDuringExecution" = Soft rule
+      # - The scheduler will try to honor the preference
+      # - But if no node matches, the Pod can still run elsewhere
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1                  # Weight = priority (1-100). Higher = stronger preference
+          preference:
+            matchExpressions:
+              - key: region          # Node label key to check
+                operator: In
+                values:
+                  - us-east-1        # Prefer nodes labeled region=us-east-1
+  containers:
+    - name: nginx
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+
