@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nodeselector
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest
+  # nodeSelector is used to schedule this Pod on specific nodes
+  nodeSelector:
+    disktype: ssd   # Only schedule this Pod onto nodes that have the label "disktype=ssd"
+
+#first apply label to the node using:
+#>kubectl label nodes node1 disktype=ssd
+
+#to unlabel the node
+#>kubectl label nodes node1 disktype-
