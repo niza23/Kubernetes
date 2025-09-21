@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3   # Number of Pods to run
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+      # nodeSelector ensures Pods are scheduled only on nodes with matching labels
+      nodeSelector:
+        disktype: ssd   # Pods will only run on nodes labeled with "disktype=ssd"
+
+
+#How it works:
+
+#This Deployment creates 3 replicas of the Nginx Pod.
+
+#Each Pod will only be scheduled on nodes that have the label disktype=ssd.
+
+#If no nodes have that label, the Pods remain in Pending state.
+
+#To make it work, you need to label at least one node:
+#>kubectl label nodes <node-name> disktype=ssd
